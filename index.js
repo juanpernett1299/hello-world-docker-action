@@ -16,6 +16,7 @@ let books = [
 		author: 'Gabo'
 	}
 ]
+//Funciones
 app.get('/books', function (req, res) {
 	res.status(200).json({
 		books: books
