@@ -1,14 +1,17 @@
-on: [push]
-
+on: push
+name: deploy
 jobs:
-  hello_world_job:
+  deploy:
     runs-on: ubuntu-latest
-    name: Un job para saludar
+    name: Deploy to cluster
     steps:
-      - name: Step Hola Mundo
-        id: hello
-        uses: juanpernett1299/hello-world-docker-action@v1
+      - uses: actions/checkout@master
+      - name: build and push to docker
+        uses: docker/build-push-action@v1
         with:
-          who-to-greet: 'Mona the Octocat'
-      - name: Usar el output
-        run: echo "La fecha fue ${{ steps.hello.outputs.time }}"
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ github.repository }}
+          tag_with_ref: true
+          tag_with_sha: true
+          tags: ${{ github.sha }}
